@@ -16,6 +16,8 @@ public class HomeElements extends BasePage {
     private static final String LOGIN_BUTTON = "//button[@class='login-button']";
     private static final String ERROR_MESSAGE_INCORRECT_DATA = "//div[@class='error_message mess_show']";
     private static final String SUCCESS_LOGIN_MESSAGE = "//div[@class='error_message success mess_show']";
+    private static final String QUICK_START = "//div[@class='fast-start__open-btn dropdown-arrow']";
+    private static final String CALCULATE_PRICE = "//ul[@class='fast-start__drop active']//a[text()='Розрахувати вартість']";
 
     public HomeElements clickSignInBtn() {
         $(By.xpath(SIGN_IN)).click();
@@ -53,5 +55,15 @@ public class HomeElements extends BasePage {
 
     public SelenideElement getSuccessLoginMessage() {
         return $(By.xpath(SUCCESS_LOGIN_MESSAGE));
+    }
+
+    public HomeElements clickQuickStartDropdown() {
+        $(By.xpath(QUICK_START)).click();
+        return this;
+    }
+
+    public HomeElements clickCalculatePrice() {
+        $(By.xpath(CALCULATE_PRICE)).click();
+        return this;
     }
 }

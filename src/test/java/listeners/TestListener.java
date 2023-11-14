@@ -1,12 +1,16 @@
 package listeners;
 
+import com.codeborne.selenide.Screenshots;
+import com.codeborne.selenide.Selenide;
+import io.qameta.allure.Attachment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-import static com.codeborne.selenide.Selenide.screenshot;
+import java.io.File;
+import java.io.IOException;
 
 public class TestListener implements ITestListener {
 
@@ -14,11 +18,10 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult testResult) {
+        captureScreenshot(testResult.getName());
         logger.info("---------------------------------------------------------------");
         logger.info("Failed because of - " + testResult.getThrowable());
         logger.info("---------------------------------------------------------------");
-
-        screenshot(testResult.getName());
     }
 
     @Override
@@ -55,5 +58,19 @@ public class TestListener implements ITestListener {
         logger.info("===============================================================");
         logger.info("     On Finish :-" + context.getName() + "                     ");
         logger.info("===============================================================");
+    }
+
+    @Attachment(value = "Failure screenshot", type = "image/png")
+    private byte[] captureScreenshot(String testName) {
+        File screenshot = Screenshots.takeScreenShotAsFile();
+        try {
+            String screenshotName = testName + "_" + System.currentTimeMillis() + ".png";
+            String screenshotPath = "allure-results/" + screenshotName;
+            Selenide.screenshot(screenshotName);
+            return java.nio.file.Files.readAllBytes(screenshot.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new byte[0];
+        }
     }
 }

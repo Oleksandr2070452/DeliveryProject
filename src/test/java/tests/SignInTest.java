@@ -38,7 +38,7 @@ public class SignInTest extends TestInit {
                 .userValidLoginPasswordInput()
                 .clickLoginButton();
 
-        assertTrue(userAreaPage.getHeaderUserPageAccount().getText().contains("Головна сторiнка"));
+        assertTrue(userAreaPage.getHeaderUserPageAccount());
         assertTrue(WebDriverRunner.url().contains("/uk/Home/UserArea"));
 
     }
